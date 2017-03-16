@@ -1,10 +1,9 @@
 <template>
-  <div>我是头部</div>
+  <div>wo shi ratings</div>
 </template>
 
 <script type="text/ecmascript-6">
-  export default {
-  };
+  export default{};
 </script>
 
 <style lang="scss" rel="stylesheet/scss">
