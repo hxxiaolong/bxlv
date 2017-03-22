@@ -12,6 +12,7 @@
         <router-link to="/seller">商家</router-link>
       </li>
     </ul>
+    <!--<div>{{shouye[0].name}}</div>-->
     <router-view></router-view>
   </div>
 </template>
@@ -20,11 +21,16 @@
   import header from "./components/header/header";
 
   const ERRNO_OK = 0;
+  const urlSetting = {
+      "base":"/healthstore"
+  };
 
   export default {
     data(){
       return {
-        seller: {}
+        seller: {},
+        shouye:[],
+        douban:{}
       };
     },
     created() {
@@ -35,6 +41,13 @@
         }
       }, response => {
         console.log("seller error");
+      });
+
+      this.$http.get(urlSetting.base+"/shop/firstSorts").then(response => {
+          this.shouye = response.body;
+          console.log(this.shouye);
+      }, response => {
+        console.log("shouye error");
       });
     },
     components: {
