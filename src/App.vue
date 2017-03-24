@@ -1,6 +1,8 @@
 <template>
   <div class="app">
-    <v-header :seller="seller"></v-header>
+    <div class="move">
+      <v-header :seller="seller" @sontellme="sontellme" ref="vheader"></v-header>
+    </div>
     <ul class="app_nav">
       <li class="app_nav_item">
         <router-link to="/goods">商品</router-link>
@@ -14,11 +16,14 @@
     </ul>
     <!--<div>{{shouye[0].name}}</div>-->
     <router-view></router-view>
+      <button @click="clicktest">click me test ref</button>
+    <v-footer></v-footer>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import header from "./components/header/header";
+  import footer from "./components/footer/footer";
 
   const ERRNO_OK = 0;
   const urlSetting = {
@@ -34,6 +39,9 @@
       };
     },
     created() {
+      console.log(this.$store.state.header.headerValue);
+      this.$store.commit("getHeaderValue");
+      console.log(this.$store.state.header.headerValue);
       this.$http.get("/api/seller").then(response => {
         response = response.body;
         if(response.errno === ERRNO_OK) {
@@ -45,13 +53,23 @@
 
       this.$http.get(urlSetting.base+"/shop/firstSorts").then(response => {
           this.shouye = response.body;
-          console.log(this.shouye);
+//          console.log(this.shouye);
       }, response => {
         console.log("shouye error");
       });
     },
     components: {
-      "v-header": header
+      "v-header": header,
+      "v-footer":footer
+    },
+    methods:{
+      sontellme(name) {
+        console.log(name);
+      },
+      clicktest(){
+          let vheader = this.$refs.vheader;
+          console.log(vheader.sortid);
+      }
     }
   };
 
@@ -59,6 +77,10 @@
 
 <style rel="stylesheet/scss" lang="scss">
   .app {
+    .move{
+      position: absolute;
+      right: 50vw;
+    }
     .app_nav {
       width: 100%;
       display: flex;

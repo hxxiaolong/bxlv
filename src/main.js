@@ -7,6 +7,7 @@ import Goods from "goods";
 import Ratings from "ratings";
 import Seller from "seller";
 import VueRouter from "vue-router";
+import store from "../store/index";
 
 Vue.config.productionTip = false;
 Vue.config.debug = true;
@@ -25,6 +26,7 @@ const router = new VueRouter({
 });
 
 const app = new Vue({
+  store,
   "router": router,
   "render": h => h(App)
 }).$mount("#app");
