@@ -14,9 +14,9 @@
         <router-link to="/seller">商家</router-link>
       </li>
     </ul>
-    <!--<div>{{shouye[0].name}}</div>-->
     <router-view></router-view>
-      <button @click="clicktest">click me test ref</button>
+    <button @click="clicktest">click me change loginin is {{loginStatus}}</button>
+    <div>{{loginStatus}}</div>
     <v-footer></v-footer>
   </div>
 </template>
@@ -24,52 +24,47 @@
 <script type="text/ecmascript-6">
   import header from "./components/header/header";
   import footer from "./components/footer/footer";
+  import api from "../fetch/api";
+  import { mapGetters } from "vuex";
 
   const ERRNO_OK = 0;
   const urlSetting = {
-      "base":"/healthstore"
+    "base": "/healthstore"
   };
 
   export default {
     data(){
       return {
         seller: {},
-        shouye:[],
-        douban:{}
+        shouye: [],
+        douban: {}
       };
     },
     created() {
-      console.log(this.$store.state.header.headerValue);
-      this.$store.commit("getHeaderValue");
-      console.log(this.$store.state.header.headerValue);
-      this.$http.get("/api/seller").then(response => {
-        response = response.body;
-        if(response.errno === ERRNO_OK) {
-          this.seller = response.data;
-        }
-      }, response => {
-        console.log("seller error");
-      });
-
-      this.$http.get(urlSetting.base+"/shop/firstSorts").then(response => {
-          this.shouye = response.body;
-//          console.log(this.shouye);
-      }, response => {
-        console.log("shouye error");
-      });
+      api.getSeller()
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log("err");
+        });
     },
     components: {
       "v-header": header,
-      "v-footer":footer
+      "v-footer": footer
     },
-    methods:{
+    methods: {
       sontellme(name) {
         console.log(name);
       },
       clicktest(){
-          let vheader = this.$refs.vheader;
-          console.log(vheader.sortid);
+       this.$store.dispatch("setLoginStatus",false);
       }
+    },
+    computed: {
+      ...mapGetters([
+        "loginStatus"
+      ])
     }
   };
 
@@ -77,7 +72,7 @@
 
 <style rel="stylesheet/scss" lang="scss">
   .app {
-    .move{
+    .move {
       position: absolute;
       right: 50vw;
     }

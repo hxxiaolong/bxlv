@@ -35,6 +35,7 @@ module.exports = {
     "space-in-parens":0,
     "keyword-spacing":0,
     "space-infix-ops":0,
-    "no-trailing-spaces":0
+    "no-trailing-spaces":0,
+    "handle-callback-err":0
   }
 }
